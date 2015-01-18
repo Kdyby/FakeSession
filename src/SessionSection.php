@@ -12,7 +12,6 @@ namespace Kdyby\FakeSession;
 
 use Kdyby;
 use Nette;
-use Nette\Http\Session;
 
 
 
@@ -25,7 +24,7 @@ class SessionSection extends Nette\Http\SessionSection
 	private $data = [];
 
 
-	public function __construct(Session $session, $name)
+	public function __construct(Nette\Http\Session $session, $name)
 	{
 		parent::__construct($session, $name);
 	}
