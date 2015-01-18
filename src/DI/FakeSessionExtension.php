@@ -25,9 +25,9 @@ class FakeSessionExtension extends Nette\DI\CompilerExtension
 	/**
 	 * @var array
 	 */
-	public $defaults = array(
+	public $defaults = [
 		'enabled' => '%consoleMode%',
-	);
+	];
 
 
 
