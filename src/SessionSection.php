@@ -33,7 +33,12 @@ class SessionSection extends Nette\Http\SessionSection
 
 	public function getIterator()
 	{
-		return parent::getIterator();
+		if (isset($this->data)) {
+			return new \ArrayIterator($this->data);
+		}
+		else {
+			return new \ArrayIterator;
+		}
 	}
 
 
