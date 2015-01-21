@@ -105,7 +105,7 @@ class Session extends Nette\Http\Session
 
 	public function getIterator()
 	{
-		return new \ArrayIterator();
+		return new \ArrayIterator(array_keys($this->sections));
 	}
 
 
@@ -119,14 +119,14 @@ class Session extends Nette\Http\Session
 
 	public function setStorage(ISessionStorage $storage)
 	{
-		return parent::setStorage($storage);
+		return $this;
 	}
 
 
 
 	public function setHandler(\SessionHandlerInterface $handler)
 	{
-		return parent::setHandler($handler);
+		return $this;
 	}
 
 }
