@@ -105,7 +105,7 @@ class Session extends Nette\Http\Session
 
 	public function getIterator()
 	{
-		return new \ArrayIterator();
+		return new \ArrayIterator(array_keys($this->sections));
 	}
 
 
