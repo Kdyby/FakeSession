@@ -29,6 +29,13 @@ class Session extends Nette\Http\Session
 
 
 
+	public function __construct()
+	{
+		// no dependencies
+	}
+
+
+
 	public function start()
 	{
 		// nope
