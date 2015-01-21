@@ -27,6 +27,21 @@ class Session extends Nette\Http\Session
 	 */
 	private $sections = [];
 
+	/**
+	 * @var bool
+	 */
+	public $started = FALSE;
+
+	/**
+	 * @var bool
+	 */
+	public $exists = FALSE;
+
+	/**
+	 * @var string
+	 */
+	public $id = NULL;
+
 
 
 	public function __construct()
@@ -45,7 +60,7 @@ class Session extends Nette\Http\Session
 
 	public function isStarted()
 	{
-		return FALSE;
+		return $this->started;
 	}
 
 
@@ -66,7 +81,7 @@ class Session extends Nette\Http\Session
 
 	public function exists()
 	{
-		return FALSE;
+		return $this->exists;
 	}
 
 
@@ -80,7 +95,7 @@ class Session extends Nette\Http\Session
 
 	public function getId()
 	{
-		return NULL;
+		return $this->id;
 	}
 
 
