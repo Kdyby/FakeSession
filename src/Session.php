@@ -79,6 +79,16 @@ class Session extends Nette\Http\Session
 
 
 
+	/**
+	 * @return boolean
+	 */
+	public function isNativeEnabled()
+	{
+		return $this->fakeMode;
+	}
+
+
+
 	public function start()
 	{
 		if (!$this->fakeMode) {
