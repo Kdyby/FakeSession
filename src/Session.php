@@ -30,17 +30,17 @@ class Session extends Nette\Http\Session
 	/**
 	 * @var bool
 	 */
-	public $started = FALSE;
+	private $started = FALSE;
 
 	/**
 	 * @var bool
 	 */
-	public $exists = FALSE;
+	private $exists = FALSE;
 
 	/**
 	 * @var string
 	 */
-	public $id = NULL;
+	private $id = NULL;
 
 	/**
 	 * @var Nette\Http\Session
@@ -99,6 +99,16 @@ class Session extends Nette\Http\Session
 
 
 
+	/**
+	 * @param bool $started
+	 */
+	public function setFakeStarted($started)
+	{
+		$this->started = $started;
+	}
+
+
+
 	public function close()
 	{
 		if (!$this->fakeMode) {
@@ -128,6 +138,17 @@ class Session extends Nette\Http\Session
 
 
 
+	/**
+	 * @param boolean $exists
+	 * @return Session
+	 */
+	public function setFakeExists($exists)
+	{
+		$this->exists = $exists;
+	}
+
+
+
 	public function regenerateId()
 	{
 		if (!$this->fakeMode) {
@@ -144,6 +165,17 @@ class Session extends Nette\Http\Session
 		}
 
 		return $this->id;
+	}
+
+
+
+	/**
+	 * @param string $id
+	 * @return Session
+	 */
+	public function setFakeId($id)
+	{
+		$this->id = $id;
 	}
 
 
