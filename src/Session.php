@@ -61,7 +61,7 @@ class Session extends Nette\Http\Session
 
 
 
-	public function disableOriginal()
+	public function disableNative()
 	{
 		if ($this->originalSession->isStarted()) {
 			throw new \LogicException('Session is already started, please close it first and then you can disabled it.');
@@ -72,7 +72,7 @@ class Session extends Nette\Http\Session
 
 
 
-	public function enableOriginal()
+	public function enableNative()
 	{
 		$this->fakeMode = FALSE;
 	}

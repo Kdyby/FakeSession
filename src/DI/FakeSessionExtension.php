@@ -46,7 +46,7 @@ class FakeSessionExtension extends Nette\DI\CompilerExtension
 			->setFactory('Kdyby\FakeSession\Session', [$this->prefix('@original')]);
 
 		if ($config['enabled']) {
-			$session->addSetup('disableOriginal');
+			$session->addSetup('disableNative');
 		}
 	}
 
