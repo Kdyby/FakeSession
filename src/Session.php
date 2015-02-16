@@ -81,7 +81,7 @@ class Session extends Nette\Http\Session
 
 	public function start()
 	{
-		if ($this->fakeMode === FALSE) {
+		if (!$this->fakeMode) {
 			$this->originalSession->start();
 		}
 	}
@@ -90,7 +90,7 @@ class Session extends Nette\Http\Session
 
 	public function isStarted()
 	{
-		if ($this->fakeMode === FALSE) {
+		if (!$this->fakeMode) {
 			return $this->originalSession->isStarted();
 		}
 
@@ -101,7 +101,7 @@ class Session extends Nette\Http\Session
 
 	public function close()
 	{
-		if ($this->fakeMode === FALSE) {
+		if (!$this->fakeMode) {
 			$this->originalSession->close();
 		}
 	}
@@ -110,7 +110,7 @@ class Session extends Nette\Http\Session
 
 	public function destroy()
 	{
-		if ($this->fakeMode === FALSE) {
+		if (!$this->fakeMode) {
 			$this->originalSession->destroy();
 		}
 	}
@@ -119,7 +119,7 @@ class Session extends Nette\Http\Session
 
 	public function exists()
 	{
-		if ($this->fakeMode === FALSE) {
+		if (!$this->fakeMode) {
 			return $this->originalSession->exists();
 		}
 
@@ -130,7 +130,7 @@ class Session extends Nette\Http\Session
 
 	public function regenerateId()
 	{
-		if ($this->fakeMode === FALSE) {
+		if (!$this->fakeMode) {
 			$this->originalSession->regenerateId();
 		}
 	}
@@ -139,7 +139,7 @@ class Session extends Nette\Http\Session
 
 	public function getId()
 	{
-		if ($this->fakeMode === FALSE) {
+		if (!$this->fakeMode) {
 			return $this->originalSession->getId();
 		}
 
@@ -150,7 +150,7 @@ class Session extends Nette\Http\Session
 
 	public function getSection($section, $class = 'Nette\Http\SessionSection')
 	{
-		if ($this->fakeMode === FALSE) {
+		if (!$this->fakeMode) {
 			return $this->originalSession->getSection($section, $class);
 		}
 
@@ -165,7 +165,7 @@ class Session extends Nette\Http\Session
 
 	public function hasSection($section)
 	{
-		if ($this->fakeMode === FALSE) {
+		if (!$this->fakeMode) {
 			return $this->originalSession->hasSection($section);
 		}
 
@@ -176,7 +176,7 @@ class Session extends Nette\Http\Session
 
 	public function getIterator()
 	{
-		if ($this->fakeMode === FALSE) {
+		if (!$this->fakeMode) {
 			return $this->originalSession->getIterator();
 		}
 
@@ -187,7 +187,7 @@ class Session extends Nette\Http\Session
 
 	public function clean()
 	{
-		if ($this->fakeMode === FALSE) {
+		if (!$this->fakeMode) {
 			$this->originalSession->clean();
 		}
 	}
