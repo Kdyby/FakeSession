@@ -31,27 +31,23 @@ class FakeSessionExtension extends Nette\DI\CompilerExtension
 
 
 
-	public function loadConfiguration()
+	public function beforeCompile()
 	{
 		$builder = $this->getContainerBuilder();
 		$config = $this->getConfig($this->defaults);
 
-		$originalSession = $builder->getDefinition('session');
-		$builder->removeDefinition('session');
-		$originalSession = $builder->addDefinition($this->prefix('original'), $originalSession)
-			->setAutowired(FALSE)
-			->setInject(FALSE);
+		$original = $builder->getDefinition($originalServiceName = $builder->getByType('Nette\Http\Session') ?: 'session');
+		$builder->removeDefinition($originalServiceName);
+		$builder->addDefinition($this->prefix('original'), $original)
+			->setAutowired(FALSE);
 
-		$builder->addDefinition($this->prefix('factory'))
-			->setClass('Kdyby\FakeSession\SessionFactory', [
-				$originalSession,
-			]);
-
-		$builder->addDefinition('session')
+		$session = $builder->addDefinition($originalServiceName)
 			->setClass('Nette\Http\Session')
-			->setFactory(new Nette\DI\Statement('@Kdyby\FakeSession\SessionFactory::create', [
-				$config['enabled'],
-			]));
+			->setFactory('Kdyby\FakeSession\Session', [$this->prefix('@original')]);
+
+		if ($config['enabled']) {
+			$session->addSetup('disableOriginal');
+		}
 	}
 
 }

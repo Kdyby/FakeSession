@@ -42,24 +42,58 @@ class Session extends Nette\Http\Session
 	 */
 	public $id = NULL;
 
+	/**
+	 * @var Nette\Http\Session
+	 */
+	private $originalSession;
+
+	/**
+	 * @var bool
+	 */
+	private $fakeMode = FALSE;
 
 
-	public function __construct()
+
+	public function __construct(Nette\Http\Session $originalSession)
 	{
-		// no dependencies
+		$this->originalSession = $originalSession;
+	}
+
+
+
+	public function disableOriginal()
+	{
+		if ($this->originalSession->isStarted()) {
+			throw new \LogicException('Session is already started, please close it first and then you can disabled it.');
+		}
+
+		$this->fakeMode = TRUE;
+	}
+
+
+
+	public function enableOriginal()
+	{
+		$this->fakeMode = FALSE;
 	}
 
 
 
 	public function start()
 	{
-		// nope
+		if ($this->fakeMode === FALSE) {
+			$this->originalSession->start();
+		}
 	}
 
 
 
 	public function isStarted()
 	{
+		if ($this->fakeMode === FALSE) {
+			return $this->originalSession->isStarted();
+		}
+
 		return $this->started;
 	}
 
@@ -67,20 +101,28 @@ class Session extends Nette\Http\Session
 
 	public function close()
 	{
-		// nope
+		if ($this->fakeMode === FALSE) {
+			$this->originalSession->close();
+		}
 	}
 
 
 
 	public function destroy()
 	{
-		// nope
+		if ($this->fakeMode === FALSE) {
+			$this->originalSession->destroy();
+		}
 	}
 
 
 
 	public function exists()
 	{
+		if ($this->fakeMode === FALSE) {
+			return $this->originalSession->exists();
+		}
+
 		return $this->exists;
 	}
 
@@ -88,31 +130,45 @@ class Session extends Nette\Http\Session
 
 	public function regenerateId()
 	{
-		// nope
+		if ($this->fakeMode === FALSE) {
+			$this->originalSession->regenerateId();
+		}
 	}
 
 
 
 	public function getId()
 	{
+		if ($this->fakeMode === FALSE) {
+			return $this->originalSession->getId();
+		}
+
 		return $this->id;
 	}
 
 
 
-	public function getSection($section, $class = 'Kdyby\FakeSession\SessionSection')
+	public function getSection($section, $class = 'Nette\Http\SessionSection')
 	{
+		if ($this->fakeMode === FALSE) {
+			return $this->originalSession->getSection($section, $class);
+		}
+
 		if (isset($this->sections[$section])) {
 			return $this->sections[$section];
 		}
 
-		return $this->sections[$section] = parent::getSection($section, $class);
+		return $this->sections[$section] = parent::getSection($section, $class !== 'Nette\Http\SessionSection' ? $class : 'Kdyby\FakeSession\SessionSection');
 	}
 
 
 
 	public function hasSection($section)
 	{
+		if ($this->fakeMode === FALSE) {
+			return $this->originalSession->hasSection($section);
+		}
+
 		return isset($this->sections[$section]);
 	}
 
@@ -120,6 +176,10 @@ class Session extends Nette\Http\Session
 
 	public function getIterator()
 	{
+		if ($this->fakeMode === FALSE) {
+			return $this->originalSession->getIterator();
+		}
+
 		return new \ArrayIterator(array_keys($this->sections));
 	}
 
@@ -127,21 +187,79 @@ class Session extends Nette\Http\Session
 
 	public function clean()
 	{
-		// nope
+		if ($this->fakeMode === FALSE) {
+			$this->originalSession->clean();
+		}
+	}
+
+
+
+	public function setName($name)
+	{
+		return $this->originalSession->setName($name);
+	}
+
+
+
+	public function getName()
+	{
+		return $this->originalSession->getName();
+	}
+
+
+
+	public function setOptions(array $options)
+	{
+		return $this->originalSession->setOptions($options);
+	}
+
+
+
+	public function getOptions()
+	{
+		return $this->originalSession->getOptions();
+	}
+
+
+
+	public function setExpiration($time)
+	{
+		return $this->originalSession->setExpiration($time);
+	}
+
+
+
+	public function setCookieParameters($path, $domain = NULL, $secure = NULL)
+	{
+		return $this->originalSession->setCookieParameters($path, $domain, $secure);
+	}
+
+
+
+	public function getCookieParameters()
+	{
+		return $this->originalSession->getCookieParameters();
+	}
+
+
+
+	public function setSavePath($path)
+	{
+		return $this->originalSession->setSavePath($path);
 	}
 
 
 
 	public function setStorage(ISessionStorage $storage)
 	{
-		return $this;
+		return $this->originalSession->setStorage($storage);
 	}
 
 
 
 	public function setHandler(\SessionHandlerInterface $handler)
 	{
-		return $this;
+		return $this->originalSession->setHandler($handler);
 	}
 
 }
