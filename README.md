@@ -16,7 +16,7 @@ Installation
 The best way to install Kdyby/FakeSession is using  [Composer](http://getcomposer.org/):
 
 ```sh
-$ composer require kdyby/fake-session:dev-master
+$ composer require kdyby/fake-session
 ```
 
 
