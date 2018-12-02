@@ -10,79 +10,59 @@
 
 namespace Kdyby\FakeSession;
 
+use ArrayIterator;
 use Kdyby;
-use Nette;
+use Nette\Http\Session as NetteSession;
 
-
-
-/**
- * @author Filip Procházka <filip@prochazka.su>
- */
-class SessionSection extends Nette\Http\SessionSection
+class SessionSection extends \Nette\Http\SessionSection
 {
 
+	/** @var mixed[] */
 	private $data = [];
 
-
-	public function __construct(Nette\Http\Session $session, $name)
+	public function __construct(NetteSession $session, $name)
 	{
 		parent::__construct($session, $name);
 	}
 
-
-
 	public function getIterator()
 	{
-		return new \ArrayIterator($this->data);
+		return new ArrayIterator($this->data);
 	}
-
-
 
 	public function __set($name, $value)
 	{
 		$this->data[$name] = $value;
 	}
 
-
-
 	public function &__get($name)
 	{
 		if ($this->warnOnUndefined && !array_key_exists($name, $this->data)) {
-			trigger_error("The variable '$name' does not exist in session section", E_USER_NOTICE);
+			trigger_error(sprintf("The variable '%s' does not exist in session section", $name), E_USER_NOTICE);
 		}
 
 		return $this->data[$name];
 	}
-
-
 
 	public function __isset($name)
 	{
 		return isset($this->data[$name]);
 	}
 
-
-
 	public function __unset($name)
 	{
 		unset($this->data[$name]);
 	}
-
-
 
 	public function setExpiration($time, $variables = NULL)
 	{
 		return $this;
 	}
 
-
-
 	public function removeExpiration($variables = NULL)
 	{
 		//
 	}
-
-
 
 	public function remove()
 	{
