@@ -1,0 +1,4 @@
+parameters:
+    ignoreErrors:
+        - '#Constant TEMP_DIR not found#' # false positive
+        - '#Kdyby\\FakeSession\\Session::__construct\(\) does not call parent constructor from Nette\\Http\\Session#' # intended behavior
