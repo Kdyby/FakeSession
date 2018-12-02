@@ -7,7 +7,7 @@ Kdyby/FakeSession
 Requirements
 ------------
 
-Kdyby/FakeSession requires PHP 5.4 or newer.
+Kdyby/FakeSession requires PHP 5.6 or newer.
 
 - [Nette Framework](https://github.com/nette/nette)
 

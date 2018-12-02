@@ -10,7 +10,6 @@
 
 namespace KdybyTests\FakeSession;
 
-use Doctrine;
 use Kdyby;
 use Nette;
 use Tester;
@@ -27,6 +26,7 @@ class ExtensionTest extends Tester\TestCase
 {
 
 	/**
+	 * @param string $configName
 	 * @return Nette\DI\Container
 	 */
 	public function createContainer($configName)
@@ -45,7 +45,7 @@ class ExtensionTest extends Tester\TestCase
 	public function testEnabledFunctionality()
 	{
 		$container = $this->createContainer('enabled');
-		$session = $container->getByType('Nette\Http\Session');
+		$session = $container->getByType(Nette\Http\Session::class);
 		Assert::true($session instanceof Kdyby\FakeSession\Session);
 		Assert::false($session->isNativeEnabled());
 	}
@@ -55,7 +55,7 @@ class ExtensionTest extends Tester\TestCase
 	public function testDisabledFunctionality()
 	{
 		$container = $this->createContainer('disabled');
-		$session = $container->getByType('Nette\Http\Session');
+		$session = $container->getByType(Nette\Http\Session::class);
 		Assert::true($session instanceof Kdyby\FakeSession\Session);
 		Assert::true($session->isNativeEnabled());
 	}

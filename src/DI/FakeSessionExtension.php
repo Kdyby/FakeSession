@@ -12,7 +12,6 @@ namespace Kdyby\FakeSession\DI;
 
 use Kdyby;
 use Nette;
-use Nette\PhpGenerator as Code;
 
 
 
@@ -36,14 +35,15 @@ class FakeSessionExtension extends Nette\DI\CompilerExtension
 		$builder = $this->getContainerBuilder();
 		$config = $this->getConfig($this->defaults);
 
-		$original = $builder->getDefinition($originalServiceName = $builder->getByType('Nette\Http\Session') ?: 'session');
+		$originalServiceName = $builder->getByType(Nette\Http\Session::class) ?: 'session';
+		$original = $builder->getDefinition($originalServiceName);
 		$builder->removeDefinition($originalServiceName);
 		$builder->addDefinition($this->prefix('original'), $original)
 			->setAutowired(FALSE);
 
 		$session = $builder->addDefinition($originalServiceName)
-			->setClass('Nette\Http\Session')
-			->setFactory('Kdyby\FakeSession\Session', [$this->prefix('@original')]);
+			->setClass(Nette\Http\Session::class)
+			->setFactory(Kdyby\FakeSession\Session::class, [$this->prefix('@original')]);
 
 		if ($config['enabled']) {
 			$session->addSetup('disableNative');

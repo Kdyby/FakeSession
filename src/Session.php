@@ -150,7 +150,6 @@ class Session extends Nette\Http\Session
 
 	/**
 	 * @param boolean $exists
-	 * @return Session
 	 */
 	public function setFakeExists($exists)
 	{
@@ -181,7 +180,6 @@ class Session extends Nette\Http\Session
 
 	/**
 	 * @param string $id
-	 * @return Session
 	 */
 	public function setFakeId($id)
 	{
@@ -190,7 +188,7 @@ class Session extends Nette\Http\Session
 
 
 
-	public function getSection($section, $class = 'Nette\Http\SessionSection')
+	public function getSection($section, $class = Nette\Http\SessionSection::class)
 	{
 		if (!$this->fakeMode) {
 			return $this->originalSession->getSection($section, $class);
@@ -200,7 +198,7 @@ class Session extends Nette\Http\Session
 			return $this->sections[$section];
 		}
 
-		return $this->sections[$section] = parent::getSection($section, $class !== 'Nette\Http\SessionSection' ? $class : 'Kdyby\FakeSession\SessionSection');
+		return $this->sections[$section] = parent::getSection($section, $class !== Nette\Http\SessionSection::class ? $class : SessionSection::class);
 	}
 
 
