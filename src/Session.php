@@ -40,7 +40,7 @@ class Session extends Nette\Http\Session
 	/**
 	 * @var string
 	 */
-	private $id = NULL;
+	private $id = '';
 
 	/**
 	 * @var Nette\Http\Session
