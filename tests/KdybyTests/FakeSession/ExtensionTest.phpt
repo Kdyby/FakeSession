@@ -11,7 +11,6 @@ declare(strict_types = 1);
 namespace KdybyTests\FakeSession;
 
 use Kdyby;
-use Kdyby\FakeSession\DI\FakeSessionExtension;
 use Kdyby\FakeSession\Session;
 use Nette\Configurator;
 use Nette\DI\Container;
@@ -31,7 +30,6 @@ class ExtensionTest extends \Tester\TestCase
 		$config->setTempDirectory(TEMP_DIR);
 		$config->addConfig(__DIR__ . '/../nette-reset.neon');
 		$config->addConfig(__DIR__ . '/config/' . $configName . '.neon');
-		FakeSessionExtension::register($config);
 
 		return $config->createContainer();
 	}

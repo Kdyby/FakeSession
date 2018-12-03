@@ -1,2 +1,5 @@
+extensions:
+    fakeSession: Kdyby\FakeSession\DI\FakeSessionExtension
+
 fakeSession:
 	enabled: true
