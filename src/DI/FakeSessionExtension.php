@@ -14,8 +14,6 @@ namespace Kdyby\FakeSession\DI;
 
 use Kdyby;
 use Kdyby\FakeSession\Session;
-use Nette\Configurator;
-use Nette\DI\Compiler;
 use Nette\Http\Session as NetteSession;
 
 class FakeSessionExtension extends \Nette\DI\CompilerExtension
@@ -51,13 +49,6 @@ class FakeSessionExtension extends \Nette\DI\CompilerExtension
 		if ($config['enabled']) {
 			$session->addSetup('disableNative');
 		}
-	}
-
-	public static function register(Configurator $configurator): void
-	{
-		$configurator->onCompile[] = function ($config, Compiler $compiler) {
-			$compiler->addExtension('fakeSession', new FakeSessionExtension());
-		};
 	}
 
 }
