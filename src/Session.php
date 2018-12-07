@@ -10,20 +10,18 @@
 
 namespace Kdyby\FakeSession;
 
+use ArrayIterator;
 use Kdyby;
-use Nette;
 use Nette\Http\ISessionStorage;
+use Nette\Http\Session as NetteSession;
+use Nette\Http\SessionSection as NetteSessionSection;
+use SessionHandlerInterface;
 
-
-
-/**
- * @author Filip Procházka <filip@prochazka.su>
- */
-class Session extends Nette\Http\Session
+class Session extends \Nette\Http\Session
 {
 
 	/**
-	 * @var array|SessionSection[]
+	 * @var array|\Nette\Http\SessionSection[]
 	 */
 	private $sections = [];
 
@@ -40,10 +38,10 @@ class Session extends Nette\Http\Session
 	/**
 	 * @var string
 	 */
-	private $id = NULL;
+	private $id = '';
 
 	/**
-	 * @var Nette\Http\Session
+	 * @var \Nette\Http\Session
 	 */
 	private $originalSession;
 
@@ -52,14 +50,10 @@ class Session extends Nette\Http\Session
 	 */
 	private $fakeMode = FALSE;
 
-
-
-	public function __construct(Nette\Http\Session $originalSession)
+	public function __construct(NetteSession $originalSession)
 	{
 		$this->originalSession = $originalSession;
 	}
-
-
 
 	public function disableNative()
 	{
@@ -70,24 +64,18 @@ class Session extends Nette\Http\Session
 		$this->fakeMode = TRUE;
 	}
 
-
-
 	public function enableNative()
 	{
 		$this->fakeMode = FALSE;
 	}
 
-
-
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isNativeEnabled()
 	{
 		return ! $this->fakeMode;
 	}
-
-
 
 	public function start()
 	{
@@ -95,8 +83,6 @@ class Session extends Nette\Http\Session
 			$this->originalSession->start();
 		}
 	}
-
-
 
 	public function isStarted()
 	{
@@ -107,8 +93,6 @@ class Session extends Nette\Http\Session
 		return $this->started;
 	}
 
-
-
 	/**
 	 * @param bool $started
 	 */
@@ -117,8 +101,6 @@ class Session extends Nette\Http\Session
 		$this->started = $started;
 	}
 
-
-
 	public function close()
 	{
 		if (!$this->fakeMode) {
@@ -126,16 +108,12 @@ class Session extends Nette\Http\Session
 		}
 	}
 
-
-
 	public function destroy()
 	{
 		if (!$this->fakeMode) {
 			$this->originalSession->destroy();
 		}
 	}
-
-
 
 	public function exists()
 	{
@@ -146,18 +124,13 @@ class Session extends Nette\Http\Session
 		return $this->exists;
 	}
 
-
-
 	/**
-	 * @param boolean $exists
-	 * @return Session
+	 * @param bool $exists
 	 */
 	public function setFakeExists($exists)
 	{
 		$this->exists = $exists;
 	}
-
-
 
 	public function regenerateId()
 	{
@@ -165,8 +138,6 @@ class Session extends Nette\Http\Session
 			$this->originalSession->regenerateId();
 		}
 	}
-
-
 
 	public function getId()
 	{
@@ -177,20 +148,15 @@ class Session extends Nette\Http\Session
 		return $this->id;
 	}
 
-
-
 	/**
 	 * @param string $id
-	 * @return Session
 	 */
 	public function setFakeId($id)
 	{
 		$this->id = $id;
 	}
 
-
-
-	public function getSection($section, $class = 'Nette\Http\SessionSection')
+	public function getSection($section, $class = NetteSessionSection::class)
 	{
 		if (!$this->fakeMode) {
 			return $this->originalSession->getSection($section, $class);
@@ -200,10 +166,8 @@ class Session extends Nette\Http\Session
 			return $this->sections[$section];
 		}
 
-		return $this->sections[$section] = parent::getSection($section, $class !== 'Nette\Http\SessionSection' ? $class : 'Kdyby\FakeSession\SessionSection');
+		return $this->sections[$section] = parent::getSection($section, $class !== NetteSessionSection::class ? $class : SessionSection::class);
 	}
-
-
 
 	public function hasSection($section)
 	{
@@ -214,18 +178,14 @@ class Session extends Nette\Http\Session
 		return isset($this->sections[$section]);
 	}
 
-
-
 	public function getIterator()
 	{
 		if (!$this->fakeMode) {
 			return $this->originalSession->getIterator();
 		}
 
-		return new \ArrayIterator(array_keys($this->sections));
+		return new ArrayIterator(array_keys($this->sections));
 	}
-
-
 
 	public function clean()
 	{
@@ -234,72 +194,52 @@ class Session extends Nette\Http\Session
 		}
 	}
 
-
-
 	public function setName($name)
 	{
 		return $this->originalSession->setName($name);
 	}
-
-
 
 	public function getName()
 	{
 		return $this->originalSession->getName();
 	}
 
-
-
 	public function setOptions(array $options)
 	{
 		return $this->originalSession->setOptions($options);
 	}
-
-
 
 	public function getOptions()
 	{
 		return $this->originalSession->getOptions();
 	}
 
-
-
 	public function setExpiration($time)
 	{
 		return $this->originalSession->setExpiration($time);
 	}
-
-
 
 	public function setCookieParameters($path, $domain = NULL, $secure = NULL, $sameSite = NULL)
 	{
 		return $this->originalSession->setCookieParameters($path, $domain, $secure, $sameSite);
 	}
 
-
-
 	public function getCookieParameters()
 	{
 		return $this->originalSession->getCookieParameters();
 	}
-
-
 
 	public function setSavePath($path)
 	{
 		return $this->originalSession->setSavePath($path);
 	}
 
-
-
 	public function setStorage(ISessionStorage $storage)
 	{
 		return $this->originalSession->setStorage($storage);
 	}
 
-
-
-	public function setHandler(\SessionHandlerInterface $handler)
+	public function setHandler(SessionHandlerInterface $handler)
 	{
 		return $this->originalSession->setHandler($handler);
 	}

@@ -11,50 +11,44 @@
 namespace Kdyby\FakeSession\DI;
 
 use Kdyby;
-use Nette;
-use Nette\PhpGenerator as Code;
+use Kdyby\FakeSession\Session;
+use Nette\Configurator;
+use Nette\DI\Compiler;
+use Nette\Http\Session as NetteSession;
 
-
-
-/**
- * @author Filip Procházka <filip@prochazka.su>
- */
-class FakeSessionExtension extends Nette\DI\CompilerExtension
+class FakeSessionExtension extends \Nette\DI\CompilerExtension
 {
 
 	/**
-	 * @var array
+	 * @var mixed[]
 	 */
 	public $defaults = [
 		'enabled' => '%consoleMode%',
 	];
-
-
 
 	public function beforeCompile()
 	{
 		$builder = $this->getContainerBuilder();
 		$config = $this->getConfig($this->defaults);
 
-		$original = $builder->getDefinition($originalServiceName = $builder->getByType('Nette\Http\Session') ?: 'session');
+		$originalServiceName = $builder->getByType(NetteSession::class) ?: 'session';
+		$original = $builder->getDefinition($originalServiceName);
 		$builder->removeDefinition($originalServiceName);
 		$builder->addDefinition($this->prefix('original'), $original)
 			->setAutowired(FALSE);
 
 		$session = $builder->addDefinition($originalServiceName)
-			->setClass('Nette\Http\Session')
-			->setFactory('Kdyby\FakeSession\Session', [$this->prefix('@original')]);
+			->setClass(NetteSession::class)
+			->setFactory(Session::class, [$this->prefix('@original')]);
 
 		if ($config['enabled']) {
 			$session->addSetup('disableNative');
 		}
 	}
 
-
-
-	public static function register(Nette\Configurator $configurator)
+	public static function register(Configurator $configurator)
 	{
-		$configurator->onCompile[] = function ($config, Nette\DI\Compiler $compiler) {
+		$configurator->onCompile[] = function ($config, Compiler $compiler) {
 			$compiler->addExtension('fakeSession', new FakeSessionExtension());
 		};
 	}
