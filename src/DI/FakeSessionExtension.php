@@ -41,7 +41,7 @@ class FakeSessionExtension extends \Nette\DI\CompilerExtension
 		$originalServiceName = $builder->getByType(NetteSession::class) ?: 'session';
 		$original = $builder->getDefinition($originalServiceName);
 		$builder->removeDefinition($originalServiceName);
-		$builder->addDefinition($this->prefix('original'), $original)
+		$builder->addDefinition($this->prefix('original'), clone $original)
 			->setAutowired(FALSE);
 
 		$session = $builder->addDefinition($originalServiceName)
