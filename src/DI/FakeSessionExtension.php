@@ -25,13 +25,18 @@ class FakeSessionExtension extends \Nette\DI\CompilerExtension
 	 * @var mixed[]
 	 */
 	public $defaults = [
-		'enabled' => '%consoleMode%',
+		'enabled' => NULL,
 	];
+
+	public function __construct()
+	{
+		$this->defaults['enabled'] = $this->defaults['enabled'] ?? (PHP_SAPI === 'cli');
+	}
 
 	public function beforeCompile(): void
 	{
 		$builder = $this->getContainerBuilder();
-		$config = $this->getConfig($this->defaults);
+		$config = $this->validateConfig($this->defaults);
 
 		$originalServiceName = $builder->getByType(NetteSession::class) ?: 'session';
 		$original = $builder->getDefinition($originalServiceName);
