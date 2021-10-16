@@ -17,7 +17,7 @@
 		"issues": "https://github.com/Kdyby/FakeSession/issues"
 	},
 	"require": {
-		"php": ">=7.1",
+		"php": ">=7.2",
 		"nette/di": "^3.0-RC1@dev",
 		"nette/http": "^3.0@dev"
 	},

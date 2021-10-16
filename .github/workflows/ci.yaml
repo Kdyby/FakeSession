@@ -10,7 +10,6 @@ jobs:
       fail-fast: false
       matrix:
         php:
-          - 7.1
           - 7.2
           - 7.3
           - 7.4
@@ -49,7 +48,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: 7.1
+          php-version: 7.2
           coverage: none
       - name: Build
         run: |
@@ -67,7 +66,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: 7.1
+          php-version: 7.2
           coverage: xdebug
       - run: composer global require php-coveralls/php-coveralls
       - name: Build
