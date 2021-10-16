@@ -1,5 +1,7 @@
 [php]
 session.gc_probability=0
+extension=xml.so
+extension=tokenizer.so
 
 [redis]
 extension=redis.so

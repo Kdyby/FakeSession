@@ -1,3 +1,8 @@
 parameters:
+    level: max
+    paths:
+        - src
+        - tests/KdybyTests
+
     ignoreErrors:
         - '#Kdyby\\FakeSession\\Session::__construct\(\) does not call parent constructor from Nette\\Http\\Session#' # intended behavior
