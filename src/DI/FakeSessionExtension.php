@@ -14,6 +14,7 @@ namespace Kdyby\FakeSession\DI;
 
 use Kdyby;
 use Kdyby\FakeSession\Session;
+use Nette\DI\Definitions\ServiceDefinition;
 use Nette\Http\Session as NetteSession;
 
 class FakeSessionExtension extends \Nette\DI\CompilerExtension
@@ -42,8 +43,8 @@ class FakeSessionExtension extends \Nette\DI\CompilerExtension
 		$builder->addDefinition($this->prefix('original'), clone $original)
 			->setAutowired(FALSE);
 
-		$session = $builder->addDefinition($originalServiceName)
-			->setClass(NetteSession::class)
+		$session = $builder->addDefinition($originalServiceName, new ServiceDefinition())
+			->setType(NetteSession::class)
 			->setFactory(Session::class, [$this->prefix('@original')]);
 
 		if ($config['enabled']) {

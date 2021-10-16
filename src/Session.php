@@ -146,6 +146,12 @@ class Session extends \Nette\Http\Session
 		$this->id = $id;
 	}
 
+
+	/**
+	 * @param string $section
+	 * @param string $class
+	 * @return NetteSessionSection<mixed>
+	 */
 	public function getSection(string $section, string $class = NetteSessionSection::class): NetteSessionSection
 	{
 		if (!$this->fakeMode) {
@@ -168,6 +174,9 @@ class Session extends \Nette\Http\Session
 		return isset($this->sections[$section]);
 	}
 
+	/**
+	 * @return Iterator<mixed>
+	 */
 	public function getIterator(): Iterator
 	{
 		if (!$this->fakeMode) {

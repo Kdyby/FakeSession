@@ -28,6 +28,10 @@ class SessionSection extends \Nette\Http\SessionSection
 		parent::__construct($session, $name);
 	}
 
+
+	/**
+	 * @return Iterator<mixed>
+	 */
 	public function getIterator(): Iterator
 	{
 		return new ArrayIterator($this->data);
