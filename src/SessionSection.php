@@ -28,9 +28,8 @@ class SessionSection extends \Nette\Http\SessionSection
 		parent::__construct($session, $name);
 	}
 
-
 	/**
-	 * @return Iterator<mixed>
+	 * @return \Iterator<mixed>
 	 */
 	public function getIterator(): Iterator
 	{
