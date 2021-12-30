@@ -83,6 +83,13 @@ class Session extends \Nette\Http\Session
 		}
 	}
 
+	public function autoStart(bool $forWrite): void
+	{
+		if (!$this->fakeMode) {
+			$this->originalSession->autoStart($forWrite);
+		}
+	}
+
 	public function isStarted(): bool
 	{
 		if (!$this->fakeMode) {
