@@ -70,7 +70,7 @@ class SessionSection extends \Nette\Http\SessionSection
 	 * @param string|string[] $variables list of variables / single variable to expire
 	 * @return static
 	 */
-	public function setExpiration($time, $variables = NULL): self
+	public function setExpiration($time, $variables = NULL): static
 	{
 		return $this;
 	}

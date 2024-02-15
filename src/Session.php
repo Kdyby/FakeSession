@@ -15,6 +15,8 @@ namespace Kdyby\FakeSession;
 use ArrayIterator;
 use Iterator;
 use Kdyby;
+use Nette\Http\IRequest;
+use Nette\Http\IResponse;
 use Nette\Http\Session as NetteSession;
 use Nette\Http\SessionSection as NetteSessionSection;
 use SessionHandlerInterface;
@@ -52,7 +54,7 @@ class Session extends \Nette\Http\Session
 	 */
 	private $fakeMode = FALSE;
 
-	public function __construct(NetteSession $originalSession)
+	public function __construct(NetteSession $originalSession, IRequest $request, IResponse $response)
 	{
 		$this->originalSession = $originalSession;
 	}
@@ -177,16 +179,10 @@ class Session extends \Nette\Http\Session
 		return new ArrayIterator(array_keys($this->sections));
 	}
 
-	public function clean(): void
-	{
-		if (!$this->fakeMode) {
-			$this->originalSession->clean();
-		}
-	}
-
-	public function setName(string $name): self
+	public function setName(string $name): static
 	{
 		$this->originalSession->setName($name);
+
 		return $this;
 	}
 
@@ -199,9 +195,10 @@ class Session extends \Nette\Http\Session
 	 * @param mixed[] $options
 	 * @return static
 	 */
-	public function setOptions(array $options): self
+	public function setOptions(array $options): static
 	{
 		$this->originalSession->setOptions($options);
+
 		return $this;
 	}
 
@@ -213,15 +210,17 @@ class Session extends \Nette\Http\Session
 		return $this->originalSession->getOptions();
 	}
 
-	public function setExpiration(?string $time): self
+	public function setExpiration(?string $time): static
 	{
 		$this->originalSession->setExpiration($time);
+
 		return $this;
 	}
 
-	public function setCookieParameters(string $path, ?string $domain = NULL, ?bool $secure = NULL, ?string $sameSite = NULL): self
+	public function setCookieParameters(string $path, ?string $domain = NULL, ?bool $secure = NULL, ?string $sameSite = NULL): static
 	{
 		$this->originalSession->setCookieParameters($path, $domain, $secure, $sameSite);
+
 		return $this;
 	}
 
@@ -233,15 +232,17 @@ class Session extends \Nette\Http\Session
 		return $this->originalSession->getCookieParameters();
 	}
 
-	public function setSavePath(string $path): self
+	public function setSavePath(string $path): static
 	{
 		$this->originalSession->setSavePath($path);
+
 		return $this;
 	}
 
-	public function setHandler(SessionHandlerInterface $handler): self
+	public function setHandler(SessionHandlerInterface $handler): static
 	{
 		$this->originalSession->setHandler($handler);
+
 		return $this;
 	}
 

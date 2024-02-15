@@ -17,15 +17,15 @@
 		"issues": "https://github.com/Kdyby/FakeSession/issues"
 	},
 	"require": {
-		"php": ">=7.1",
-		"nette/di": "^3.0-RC1@dev",
-		"nette/http": "^3.0@dev"
+		"php": ">=8.1",
+		"nette/di": "^3.2",
+		"nette/http": "^3.1"
 	},
 	"require-dev": {
-		"nette/utils": "^3.0@dev",
-		"nette/bootstrap": "^3.0@dev",
-		"nette/caching": "^3.0@dev",
-		"nette/tester": "^2.3.2"
+		"nette/utils": "^4.0",
+		"nette/bootstrap": "^3.0",
+		"nette/caching": "^3.0",
+		"nette/tester": "^2.5"
 	},
 	"autoload": {
 		"psr-4": {
