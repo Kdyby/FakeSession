@@ -33,19 +33,30 @@ class SessionSection extends \Nette\Http\SessionSection
 		return new ArrayIterator($this->data);
 	}
 
-	/**
-	 * @param string $name
-	 * @param mixed $value
-	 */
+
+	/** @param mixed $value */
+	public function set(string $name, $value, ?string $expiration = NULL): void
+	{
+		if ($value === NULL) {
+			$this->remove($name);
+		} else {
+			$this->__set($name, $value);
+		}
+	}
+
+	/** @return mixed */
+	public function get(string $name)
+	{
+		return $this->__get($name);
+	}
+
+	/** @param mixed $value */
 	public function __set(string $name, $value): void
 	{
 		$this->data[$name] = $value;
 	}
 
-	/**
-	 * @param string $name
-	 * @return mixed
-	 */
+	/** @return mixed */
 	public function &__get(string $name)
 	{
 		if ($this->warnOnUndefined && !array_key_exists($name, $this->data)) {
@@ -62,7 +73,7 @@ class SessionSection extends \Nette\Http\SessionSection
 
 	public function __unset(string $name): void
 	{
-		unset($this->data[$name]);
+		$this->remove($name);
 	}
 
 	/**
@@ -82,9 +93,16 @@ class SessionSection extends \Nette\Http\SessionSection
 	{
 	}
 
-	public function remove(): void
+	/** @param string|string[]|null $name */
+	public function remove($name = null): void
 	{
-		$this->data = [];
+		if ($name !== NULL) {
+			foreach ((array) $name as $name) {
+				unset($this->data[$name]);
+			}
+		} else {
+			$this->data = [];
+		}
 	}
 
 }
